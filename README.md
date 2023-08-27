@@ -1,1 +1,9 @@
 # SD-DINO-Video
+
+To prepare the input videos, crop them to a quadratic format with a resolution that is divisible by 8. For DAVIS videos, you can use crop_video.py. Adjust w\_min to set the cropped region further to the left or to the right.
+
+To transfer an object from a reference image to a video, use swap.py. This requires an SD-DINO installation (https://github.com/Junyi42/sd-dino). First, place swap.py in the root folder of the SD-DINO installation. Create a new subfolder for the input video frames in the sd-dino/data/images folder. The frames should be numbered 00000.jpg, 00001.jpg, and so on (png is also a valid file format). The reference frame should be placed together with the video frames and have the same name as the folder. Adjust the image folder, CoCo object category, and number of frames in swap.py as required. Running the script can take several minutes per frame. The edited frames are saved under sd-dino/results_swap/\[name of your data folder\].
+
+For the refinement step, use video_inpainting.py. This requires Stable Diffusion Webui (https://github.com/AUTOMATIC1111/stable-diffusion-webui) and the ControlNet extension (https://github.com/Mikubill/sd-webui-controlnet). Within the stable-diffusion-webui folder, open webui-user.bat with a text editor and add "--api" directly after "set COMMANDLINE_ARGS=" to enable API access. We also recommend enabling xformers for faster processing speed on NVIDIA GPUs with the "--xformers" option. After saving the changes, start a Stable Diffusion server by double-clicking on webui-user.bat. Now, you can run video_inpainting.py. The results of SD-DINO object transfer should be in a separate folder within the folder with the original video frames.
+
+To numerically evaluate the edited videos, use clip_dist_img_img for frame consistency.py, and clip_dist_txt_img.py for text consistency.
